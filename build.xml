@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="jar" name="fenix-mqs">
+
+  <property name="application.name" value="${ant.project.name}"/>
+	
+  <property name="tomcat.home" value="/home/davidmartinho/Applications/apache-tomcat-7.0.23"/>
+	
+  <property name="src.rel-dir" value="src/main"/>
+  <property name="build.rel-dir" value="target"/>
+  <property name="lib.rel-dir" value="lib"/>
+  <property name="dist.rel-dir" value="dist"/>
+  <property name="eclipse.build.rel-dir" value="bin"/>	
+
+  <property name="java.src.rel-dir" value="${src.rel-dir}/java" />
+  <property name="dml.src.rel-dir" value="${src.rel-dir}/dml" />
+  <property name="config.src.rel-dir" value="${src.rel-dir}/config" />
+  <property name="webapp.src.rel-dir" value="${src.rel-dir}/webapp" />
+	
+  <property name="generated-src.build.rel-dir" value="${build.rel-dir}/src" />
+  <property name="classes.build.rel-dir" value="${build.rel-dir}/classes" />
+
+  <property name="jar.filename" value="${application.name}.jar" />
+  <property name="war.filename" value="${application.name}.war" />
+  <property name="build.properties.filename" value="build.properties" />
+  <property name="dml.filename" value="${application.name}.dml" />
+	<property name="dml.rel-file" value="${dml.src.rel-dir}/${dml.filename}" />
+	<property name="build.properties.rel-dir" value="${config.src.rel-dir}/${build.properties.filename}" />
+
+  <property file="${build.properties.rel-dir}" />
+	
+  <!-- The encoding of all the source files should be the same! -->
+  <property name="javac.encoding" value="UTF-8" />
+
+  <!-- java.file.encoding should match your terminal's encoding -->
+  <property name="java.file.encoding" value="UTF-8" />
+
+  <path id="project.classpath">
+    <pathelement location="${classes.build.rel-dir}" />
+    <fileset dir="${lib.rel-dir}">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+  <taskdef resource="pt/ist/fenixframework/dml-ant.xml" classpathref="project.classpath"/>
+
+  <target name="prepare">
+    <echo message="Preparing the project for build..."/>
+    <mkdir dir="${classes.build.rel-dir}"/>
+  </target>
+
+  <target name="generate-domain">
+    <echo message="Generating base domain classes..." />
+    <echo message="Using: ${dml.rel-file}" />
+    <dml-domain-generator destDirectory="${java.src.rel-dir}"
+                          destDirectoryBase="${generated-src.build.rel-dir}">
+      <fileset file="${dml.rel-file}"/>
+    </dml-domain-generator>
+  </target>
+
+  <target name="compile" depends="generate-domain, prepare">
+    <echo message="Compiling sources..." />
+    <copy file="${build.properties.rel-dir}" todir="${classes.build.rel-dir}"/>
+    <copy file="${dml.rel-file}" todir="${classes.build.rel-dir}"/>
+    <javac destdir="${classes.build.rel-dir}" debug="true" debuglevel="lines,vars,source"
+           optimize="true" deprecation="true" verbose="false" includeantruntime="false">
+      <classpath refid="project.classpath" />
+      <src>
+        <pathelement path="${generated-src.build.rel-dir}:${java.src.rel-dir}"/>
+      </src>
+      <compilerarg line=""/>
+    </javac>
+  </target>
+
+  <target name="instrument-classes" depends="compile">
+    <echo message="Injecting FenixFramework Voodoo Magic..." />
+    <dml-post-processor dir="${classes.build.rel-dir}">
+      <fileset file="${dml.rel-file}"/>
+      <classpath refid="project.classpath" />
+    </dml-post-processor>
+    <copy file="${dml.rel-file}" todir="${classes.build.rel-dir}"/>
+  </target>
+
+	<target name="run" depends="instrument-classes" description="Runs the tests">
+		<java classname="eu.ist.organization.TestPeopleCreation">
+      <classpath>
+      	<path refid="project.classpath" />
+      </classpath>
+		</java>
+	</target>
+	
+  <target name="jar" depends="instrument-classes" description="Create a jar file">
+    <zip destfile="${dist.rel-dir}/${jar.filename}" basedir="${classes.build.rel-dir}"/>
+  </target>
+	
+	<target name="prepare-war" depends="instrument-classes">
+	  <move todir="${build.rel-dir}/WEB-INF/">
+	    <fileset dir="${build.rel-dir}" />
+	  </move>
+		<delete dir="${build.rel-dir}/WEB-INF/src" />
+		<copy todir="${build.rel-dir}/WEB-INF/lib">
+		  <fileset dir="${lib.rel-dir}" />
+		</copy>
+	</target>
+	
+	<target name="war" depends="prepare-war" description="Creates a war file">
+    <war destfile="${dist.rel-dir}/${war.filename}" webxml="${webapp.src.rel-dir}/web.xml">
+      <fileset dir="${build.rel-dir}"	/>
+    </war>
+	</target>
+
+  <target name="clean" description="Cleans the compiled classes and generated sources">
+    <delete dir="${build.rel-dir}"/>
+    <delete dir="${eclipse.build.rel-dir}"/>
+    <delete dir="${dist.rel-dir}"/>
+  </target>
+	
+  <target name="clean-db" description="Cleans the database">
+    <sql driver="${sql.driver}" url="${sql.url}" userid="${sql.username}" password="${sql.password}" classpathref="project.classpath">
+      <transaction>
+        DROP SCHEMA IF EXISTS ${sql.db}
+      </transaction>
+      <transaction>
+        CREATE SCHEMA IF NOT EXISTS ${sql.db}
+      </transaction>
+    </sql>
+  </target>
+	
+	<target name="clean-all" description="Cleans the all project including DB" depends="clean,clean-db" />
+	
+  <target name="undeploy" description="Undeploys the WAR from Apache Tomcat">
+    <delete dir="${tomcat.home}/webapps/${application.name}/"/>
+    <delete file="${tomcat.home}/webapps/${war.filename}"/>
+  </target>
+  
+  <target name="deploy" description="Deploys the WAR to Apache Tomcat">
+    <copy file="${dist.rel-dir}/${war.filename}" todir="${tomcat.home}/webapps"/>
+  </target>
+
+</project>

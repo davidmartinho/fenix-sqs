@@ -1,0 +1,23 @@
+package eu.ist.fenix.mqs.domain;
+
+class MessageQueueService;
+
+class MessageQueue {
+  String name;
+}
+
+class Message {
+  DateTime creationTimestamp;
+  String payload;
+  boolean claimed;
+}
+
+relation MessageQueueServiceHasMessageQueues {
+  MessageQueueService playsRole messageQueueService { multiplicity 1..1; }
+  MessageQueue playsRole messageQueue { multiplicity 0..*; }
+}
+
+relation MessageQueuesContainMessages {
+  MessageQueue playsRole messageQueue { multiplicity 0..1; }
+  Message playsRole message { multiplicity 0..*; }
+}
