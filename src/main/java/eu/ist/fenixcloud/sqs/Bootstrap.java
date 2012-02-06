@@ -1,6 +1,6 @@
 package eu.ist.fenixcloud.sqs;
 
-import eu.ist.fenixcloud.sqs.domain.MessageQueueService;
+import eu.ist.fenixcloud.sqs.domain.SimpleQueueService;
 import pt.ist.fenixframework.Config;
 import pt.ist.fenixframework.FenixFramework;
 
@@ -13,7 +13,7 @@ public class Bootstrap {
         dbAlias = PropertiesManager.getProperty("sql.alias");
         dbUsername = PropertiesManager.getProperty("sql.username");
         dbPassword = PropertiesManager.getProperty("sql.password");
-        rootClass = MessageQueueService.class;
+        rootClass = SimpleQueueService.class;
       }});
     } catch(Error e) {
       

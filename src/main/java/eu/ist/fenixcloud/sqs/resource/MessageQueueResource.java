@@ -16,7 +16,7 @@ import pt.ist.fenixframework.FenixFramework;
 import eu.ist.fenixcloud.sqs.Bootstrap;
 import eu.ist.fenixcloud.sqs.domain.Message;
 import eu.ist.fenixcloud.sqs.domain.MessageQueue;
-import eu.ist.fenixcloud.sqs.domain.MessageQueueService;
+import eu.ist.fenixcloud.sqs.domain.SimpleQueueService;
 import eu.ist.fenixcloud.sqs.mapper.JsonMapper;
 import eu.ist.fenixcloud.sqs.mapper.Mapper;
 
@@ -58,7 +58,7 @@ public class MessageQueueResource {
   @Atomic
   public static String createMessageOnMessageQueue(String queueOid, String payload) {
     try {
-      MessageQueue mq = (MessageQueue)MessageQueueService.fromOID(Long.parseLong(queueOid));
+      MessageQueue mq = (MessageQueue)SimpleQueueService.fromOID(Long.parseLong(queueOid));
       Message message = mq.createNewMessage(payload);
       Mapper jsonMapper = new JsonMapper();
       return jsonMapper.externalizeMessage(message);  
@@ -71,7 +71,7 @@ public class MessageQueueResource {
   @Atomic
   public static String fetchAllExistingQueues() {
     try {
-      MessageQueueService mqs = (MessageQueueService)FenixFramework.getRoot();
+      SimpleQueueService mqs = (SimpleQueueService)FenixFramework.getRoot();
       Mapper jsonMapper = new JsonMapper();
       return jsonMapper.externalizeMessageQueueSet(mqs.getMessageQueueSet());
     } catch(Exception e) {
@@ -82,7 +82,7 @@ public class MessageQueueResource {
   @Atomic
   public static String fetchNextAvailableMessage(String queueOid) {
     try {
-      MessageQueue mq = (MessageQueue)MessageQueueService.fromOID(Long.parseLong(queueOid));
+      MessageQueue mq = (MessageQueue)SimpleQueueService.fromOID(Long.parseLong(queueOid));
       final Message availableMessage = mq.getNextAvailableMessage();
       Mapper jsonMapper = new JsonMapper();
       Timer t = new Timer();
@@ -102,7 +102,7 @@ public class MessageQueueResource {
   
   @Atomic
   public static String createMessageQueue(String queueName) {
-    MessageQueueService mqs = (MessageQueueService)FenixFramework.getRoot();
+    SimpleQueueService mqs = (SimpleQueueService)FenixFramework.getRoot();
     MessageQueue mq = mqs.createMessageQueue(queueName);
     Mapper jsonMapper = new JsonMapper();
     return jsonMapper.externalizeMessageQueue(mq);
@@ -110,7 +110,7 @@ public class MessageQueueResource {
   
   @Atomic
   public static void releaseMessage(Long messageOid) {
-    Message m = (Message)MessageQueueService.fromOID(messageOid);
+    Message m = (Message)SimpleQueueService.fromOID(messageOid);
     if(m.isClaimed()) {
       m.setClaimed(false);
     }

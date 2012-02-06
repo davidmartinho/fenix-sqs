@@ -1,6 +1,6 @@
 package eu.ist.fenixcloud.sqs.domain;
 
-class MessageQueueService;
+class SimpleQueueService;
 
 class MessageQueue {
   String name;
@@ -12,8 +12,8 @@ class Message {
   boolean claimed;
 }
 
-relation MessageQueueServiceHasMessageQueues {
-  MessageQueueService playsRole messageQueueService { multiplicity 1..1; }
+relation SimpleQueueServiceHasMessageQueues {
+  SimpleQueueService playsRole simpleQueueService { multiplicity 1..1; }
   MessageQueue playsRole messageQueue { multiplicity 0..*; }
 }
 

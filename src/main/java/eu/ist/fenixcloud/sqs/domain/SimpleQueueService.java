@@ -1,8 +1,8 @@
 package eu.ist.fenixcloud.sqs.domain;
 
-public class MessageQueueService extends MessageQueueService_Base {
+public class SimpleQueueService extends SimpleQueueService_Base {
 
-  public MessageQueueService() {
+  public SimpleQueueService() {
     
   }
   
