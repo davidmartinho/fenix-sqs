@@ -1,4 +1,4 @@
-package eu.ist.fenix.mqs.domain;
+package eu.ist.fenix.sqs.domain;
 
 public class MessageQueueService extends MessageQueueService_Base {
 

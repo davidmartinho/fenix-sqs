@@ -1,4 +1,4 @@
-package eu.ist.fenix.mqs;
+package eu.ist.fenix.sqs;
 
 import java.io.IOException;
 import java.util.Properties;

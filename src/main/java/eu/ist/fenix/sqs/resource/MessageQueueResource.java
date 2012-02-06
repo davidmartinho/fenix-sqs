@@ -1,4 +1,4 @@
-package eu.ist.fenix.mqs.resource;
+package eu.ist.fenix.sqs.resource;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -1,4 +1,4 @@
-package eu.ist.fenix.mqs;
+package eu.ist.fenix.sqs;
 
 import eu.ist.fenix.mqs.domain.MessageQueueService;
 import pt.ist.fenixframework.Config;

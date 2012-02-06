@@ -1,4 +1,4 @@
-package eu.ist.fenix.mqs.mapper;
+package eu.ist.fenix.sqs.mapper;
 
 import java.util.Set;
 

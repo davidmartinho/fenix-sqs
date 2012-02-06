@@ -1,4 +1,4 @@
-package eu.ist.fenix.mqs.resource;
+package eu.ist.fenix.sqs.resource;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
