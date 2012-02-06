@@ -1,9 +1,9 @@
-package eu.ist.fenix.sqs.mapper;
+package eu.ist.fenixcloud.sqs.mapper;
 
 import java.util.Set;
 
-import eu.ist.fenix.mqs.domain.Message;
-import eu.ist.fenix.mqs.domain.MessageQueue;
+import eu.ist.fenixcloud.sqs.domain.Message;
+import eu.ist.fenixcloud.sqs.domain.MessageQueue;
 
 public interface Mapper {
 

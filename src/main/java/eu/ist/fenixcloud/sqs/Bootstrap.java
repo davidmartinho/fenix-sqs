@@ -1,6 +1,6 @@
-package eu.ist.fenix.sqs;
+package eu.ist.fenixcloud.sqs;
 
-import eu.ist.fenix.mqs.domain.MessageQueueService;
+import eu.ist.fenixcloud.sqs.domain.MessageQueueService;
 import pt.ist.fenixframework.Config;
 import pt.ist.fenixframework.FenixFramework;
 

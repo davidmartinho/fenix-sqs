@@ -1,4 +1,4 @@
-package eu.ist.fenix.sqs.resource;
+package eu.ist.fenixcloud.sqs.resource;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
@@ -6,11 +6,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import jvstm.Atomic;
-import eu.ist.fenix.mqs.Bootstrap;
-import eu.ist.fenix.mqs.domain.Message;
-import eu.ist.fenix.mqs.domain.MessageQueueService;
-import eu.ist.fenix.mqs.mapper.JsonMapper;
-import eu.ist.fenix.mqs.mapper.Mapper;
+import eu.ist.fenixcloud.sqs.Bootstrap;
+import eu.ist.fenixcloud.sqs.domain.Message;
+import eu.ist.fenixcloud.sqs.domain.MessageQueueService;
+import eu.ist.fenixcloud.sqs.mapper.JsonMapper;
+import eu.ist.fenixcloud.sqs.mapper.Mapper;
 
 @Path("message")
 public class MessageResource {

@@ -1,4 +1,4 @@
-package eu.ist.fenix.sqs.resource;
+package eu.ist.fenixcloud.sqs.resource;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,12 +13,12 @@ import javax.ws.rs.core.MediaType;
 
 import jvstm.Atomic;
 import pt.ist.fenixframework.FenixFramework;
-import eu.ist.fenix.mqs.Bootstrap;
-import eu.ist.fenix.mqs.domain.Message;
-import eu.ist.fenix.mqs.domain.MessageQueue;
-import eu.ist.fenix.mqs.domain.MessageQueueService;
-import eu.ist.fenix.mqs.mapper.JsonMapper;
-import eu.ist.fenix.mqs.mapper.Mapper;
+import eu.ist.fenixcloud.sqs.Bootstrap;
+import eu.ist.fenixcloud.sqs.domain.Message;
+import eu.ist.fenixcloud.sqs.domain.MessageQueue;
+import eu.ist.fenixcloud.sqs.domain.MessageQueueService;
+import eu.ist.fenixcloud.sqs.mapper.JsonMapper;
+import eu.ist.fenixcloud.sqs.mapper.Mapper;
 
 @Path("queue")
 public class MessageQueueResource {

@@ -1,4 +1,4 @@
-package eu.ist.fenix.sqs;
+package eu.ist.fenixcloud.sqs;
 
 import java.io.IOException;
 import java.util.Properties;

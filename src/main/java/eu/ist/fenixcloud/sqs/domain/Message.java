@@ -1,4 +1,4 @@
-package eu.ist.fenix.sqs.domain;
+package eu.ist.fenixcloud.sqs.domain;
 
 import java.util.Comparator;
 
