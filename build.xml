@@ -2,9 +2,7 @@
 <project basedir="." default="jar" name="fenix-sqs">
 
   <property name="application.name" value="${ant.project.name}"/>
-	
-  <property name="tomcat.home" value="/home/davidmartinho/Applications/apache-tomcat-7.0.23"/>
-	
+		
   <property name="src.rel-dir" value="src/main"/>
   <property name="build.rel-dir" value="target"/>
   <property name="lib.rel-dir" value="lib"/>
@@ -128,11 +126,13 @@
 	<target name="clean-all" description="Cleans the all project including DB" depends="clean,clean-db" />
 	
   <target name="undeploy" description="Undeploys the WAR from Apache Tomcat">
+    <fail unless="tomcat.home">Must pass the "tomcat" path argument</fail>
     <delete dir="${tomcat.home}/webapps/${application.name}/"/>
     <delete file="${tomcat.home}/webapps/${war.filename}"/>
   </target>
   
   <target name="deploy" description="Deploys the WAR to Apache Tomcat">
+  	<fail unless="tomcat.home">Must pass the "tomcat" path argument</fail>
     <copy file="${dist.rel-dir}/${war.filename}" todir="${tomcat.home}/webapps"/>
   </target>
 
